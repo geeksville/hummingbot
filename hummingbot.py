@@ -12,14 +12,15 @@ from aiy.vision.inference import CameraInference
 from aiy.vision.models import image_classification
 from picamera import PiCamera
 
-# For debugging purposes we track what
+# For debugging purposes we track what types of things we have seen (and how many)
 oldclasses = set()
-count = 1
+
+# if true we don't actually upload to twitter
 testing = False
 
 # a date in the far past
 lasttime = datetime.datetime.min
-#
+# we only tweet once every 30 mins max
 maxdelta = datetime.timedelta(minutes = 30)
 
 # "obelisk",
@@ -60,7 +61,6 @@ def main():
         # if out of memory err occurs see https://stackoverflow.com/questions/39251815/python-not-taking-picture-at-highest-resolution-from-raspberry-pi-camera
         camera.resolution = (1920, 1080)
 
-
         with CameraInference(image_classification.model(image_classification.MOBILENET)) as inference:
             for result in inference.run(num_frames):
                 classes = image_classification.get_classes(result)
@@ -72,16 +72,12 @@ def main():
                     filename = name.replace("/","_").replace(" ", ".")
                     hasbird = list(filter(lambda canidate: (canidate in name), interesting))
 
-                    if hasbird:
-                        # filename += str(count) # we keep all bird images for testing
-                        count += 1
-
                     filename += ".jpg"
                     # print('writing', filename)
-                    if hasbird:
-                        camera.capture(filename)
 
                     if hasbird:
+                        camera.capture(filename) # the twitter client only reads from disk (for now FIXME)
+
                         now = datetime.datetime.now()
                         deltat = now - lasttime
                         if deltat > maxdelta:
