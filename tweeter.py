@@ -20,14 +20,14 @@ if "user" in config:
 else:
     try:
         redirect_url = auth.get_authorization_url()
-        print("auth url", redirect_url)
+        print("Visit this URL and then paste in the PIN that twitter gives you", redirect_url)
     except tweepy.TweepError:
         print('Error! Failed to get request token.')
 
     verifier = raw_input('PIN:').strip()
     auth.get_access_token(verifier)
 
-    # FIXME - save config to disk
+    # Save config to disk
     print('saving new access token')
     config["user"] = {}
     config["user"]["access_token"] = str(auth.access_token)
