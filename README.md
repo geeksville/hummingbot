@@ -16,9 +16,9 @@ instructions as needed to make it clearer/easier.
 2. Clone this repository into that directory
 3. run "sudo pip3 install pyyaml tweepy".  This installs libraries this little
 bot needs.
-4. Go to the twitter developer console and register for your developer
-consumer_key and consumer_secret.  Put those values into the indicated
-portion of config.yml.
+4. Go to the [twitter developer console](https://apps.twitter.com/) and
+register for your developer consumer_key and consumer_secret.  
+Put those values into the indicated portion of config.yml.
 5. run "python3 hummingbot.py".  If this is the first time you run the bot
 it will ask you to visit an URL in your browser to get a PIN.  Visit that URL
 and type the PIN into this app.  The app will then save the necessary keys
